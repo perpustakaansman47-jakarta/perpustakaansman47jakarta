@@ -474,6 +474,35 @@ def input_peminjaman_page():
     show_header()
     st.markdown("## 📖 INPUT PEMINJAMAN BUKU")
     
+    # JavaScript untuk auto-update tanggal pengembalian
+    st.markdown("""
+    <script>
+    // Auto-calculate return date (3 days after loan date)
+    function updateReturnDate() {
+        const loanDateInput = document.querySelector('input[type="date"]');
+        if (loanDateInput && loanDateInput.value) {
+            const loanDate = new Date(loanDateInput.value);
+            loanDate.setDate(loanDate.getDate() + 3);
+            
+            const year = loanDate.getFullYear();
+            const month = String(loanDate.getMonth() + 1).padStart(2, '0');
+            const day = String(loanDate.getDate()).padStart(2, '0');
+            
+            return `${year}-${month}-${day}`;
+        }
+        return null;
+    }
+    
+    // Listen for date changes
+    setTimeout(() => {
+        const loanDateInput = document.querySelector('input[type="date"]');
+        if (loanDateInput) {
+            loanDateInput.addEventListener('change', updateReturnDate);
+        }
+    }, 1000);
+    </script>
+    """, unsafe_allow_html=True)
+    
     with st.form("form_peminjaman"):
         col1, col2 = st.columns(2)
         
@@ -493,9 +522,23 @@ def input_peminjaman_page():
             else:
                 st.warning("⚠️ Buku tidak ditemukan")
         
-        # Tanggal kembali otomatis
+        # Tanggal kembali otomatis (REAL-TIME UPDATE)
         tanggal_kembali = tanggal_pinjam + timedelta(days=3)
-        st.info(f"📅 Tanggal Pengembalian: **{tanggal_kembali.strftime('%d-%m-%Y')}** _(3 hari dari tanggal pinjam)_")
+        
+        # Tampilkan dengan highlight
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); 
+                    padding: 15px; border-radius: 10px; border-left: 4px solid #2196f3;
+                    margin: 10px 0;">
+            <p style="margin: 0; font-size: 16px; color: #1565c0;">
+                📅 <strong>Tanggal Pengembalian (Otomatis):</strong> 
+                <span style="font-size: 18px; font-weight: bold; color: #0d47a1;">
+                    {tanggal_kembali.strftime('%d-%m-%Y')}
+                </span>
+                <em style="color: #666; font-size: 14px;"> (3 hari dari tanggal pinjam)</em>
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
         
         st.markdown("---")
         
