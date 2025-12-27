@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 import os
 from typing import Optional, Dict, List
+import base64
 
 # =====================================================
 # KONFIGURASI HALAMAN
@@ -52,8 +53,12 @@ st.markdown("""
         background: linear-gradient(180deg, #1e88e5 0%, #1565c0 100%);
     }
     
+    [data-testid="stSidebar"] * {
+        color: white !important;
+    }
+    
     /* Success/Error Messages */
-    .stSuccess, .stError, .stWarning {
+    .stSuccess, .stError, .stWarning, .stInfo {
         border-radius: 8px;
         padding: 15px;
     }
@@ -64,6 +69,34 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+# =====================================================
+# HELPER UNTUK GAMBAR
+# =====================================================
+def get_base64_image(image_path):
+    """Convert image to base64"""
+    try:
+        with open(image_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode()
+    except:
+        return None
+
+def set_background_image(image_path, opacity=0.15):
+    """Set background image halaman login"""
+    base64_img = get_base64_image(image_path)
+    if base64_img:
+        st.markdown(f"""
+        <style>
+        .stApp {{
+            background: linear-gradient(rgba(255,255,255,{opacity}), rgba(255,255,255,{opacity})),
+                        url("data:image/png;base64,{base64_img}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+        </style>
+        """, unsafe_allow_html=True)
 
 # =====================================================
 # KONFIGURASI DATABASE
@@ -359,7 +392,14 @@ class AuthService:
 # =====================================================
 
 def show_header():
-    """Header dengan styling"""
+    """Header dengan gambar gedung SMAN 47"""
+    
+    # Banner gedung sekolah di atas header
+    col1, col2, col3 = st.columns([1, 3, 1])
+    with col2:
+        if os.path.exists("sman47.jpeg"):
+            st.image("sman47.jpeg", use_container_width=True)
+    
     st.markdown(f"""
     <div class="main-header">
         <h1>🏫 SISTEM PERPUSTAKAAN SMAN 47 JAKARTA</h1>
@@ -368,7 +408,12 @@ def show_header():
     """, unsafe_allow_html=True)
 
 def login_page():
-    """Halaman Login"""
+    """Halaman Login dengan Background Library"""
+    
+    # Background gambar library digital
+    if os.path.exists("logo1.jpeg"):
+        set_background_image("logo1.jpeg", opacity=0.15)
+    
     st.markdown("""
     <div class="main-header">
         <h1>🏫 SMAN 47 JAKARTA</h1>
@@ -382,18 +427,22 @@ def login_page():
         st.markdown("### 🔐 LOGIN ADMIN")
         
         with st.form("login_form"):
-            username = st.text_input("👤 Username")
-            password = st.text_input("🔒 Password", type="password")
-            submit = st.form_submit_button("LOGIN", use_container_width=True)
+            username = st.text_input("👤 Username", placeholder="Masukkan username")
+            password = st.text_input("🔒 Password", type="password", placeholder="Masukkan password")
+            
+            col_a, col_b, col_c = st.columns([1, 2, 1])
+            with col_b:
+                submit = st.form_submit_button("🚀 LOGIN", use_container_width=True)
             
             if submit:
                 if not username or not password:
-                    st.error("Username dan password harus diisi!")
+                    st.error("⚠️ Username dan password harus diisi!")
                 elif AuthService.login(username, password):
-                    st.success("Login berhasil!")
+                    st.success("✅ Login berhasil! Mengalihkan...")
+                    st.balloons()
                     st.rerun()
                 else:
-                    st.error("Username atau password salah!")
+                    st.error("❌ Username atau password salah!")
         
         st.markdown("---")
         st.caption("© 2025 SMAN 47 Jakarta - PKM Universitas Pamulang")
@@ -407,11 +456,11 @@ def input_peminjaman_page():
         col1, col2 = st.columns(2)
         
         with col1:
-            nama_siswa = st.text_input("👤 Nama Siswa")
+            nama_siswa = st.text_input("👤 Nama Siswa", placeholder="Masukkan nama siswa")
             kelas = st.text_input("📚 Kelas", placeholder="Contoh: 11 IPA 1")
             
         with col2:
-            kode_buku = st.text_input("🔍 Kode Buku")
+            kode_buku = st.text_input("🔍 Kode Buku", placeholder="Masukkan kode buku")
             tanggal_pinjam = st.date_input("📅 Tanggal Pinjam", datetime.now())
         
         # Info buku
@@ -424,19 +473,23 @@ def input_peminjaman_page():
         
         # Tanggal kembali otomatis
         tanggal_kembali = tanggal_pinjam + timedelta(days=3)
-        st.info(f"📅 Tanggal Pengembalian: **{tanggal_kembali.strftime('%Y-%m-%d')}**")
+        st.info(f"📅 Tanggal Pengembalian: **{tanggal_kembali.strftime('%d-%m-%Y')}** _(3 hari dari tanggal pinjam)_")
         
-        submit = st.form_submit_button("✅ SIMPAN PEMINJAMAN", use_container_width=True)
+        st.markdown("---")
+        
+        col_a, col_b, col_c = st.columns([1, 2, 1])
+        with col_b:
+            submit = st.form_submit_button("✅ SIMPAN PEMINJAMAN", use_container_width=True)
         
         if submit:
             if not nama_siswa or not kelas or kelas == "Contoh: 11 IPA 1":
-                st.error("Nama siswa dan kelas harus diisi!")
+                st.error("❌ Nama siswa dan kelas harus diisi!")
             elif not kode_buku:
-                st.error("Kode buku harus diisi!")
+                st.error("❌ Kode buku harus diisi!")
             else:
                 buku = BukuModel.get_by_kode(kode_buku)
                 if not buku:
-                    st.error("Buku tidak ditemukan!")
+                    st.error("❌ Buku tidak ditemukan!")
                 else:
                     try:
                         # Get or create kelas
@@ -455,32 +508,39 @@ def input_peminjaman_page():
                             st.session_state.admin_id
                         )
                         
-                        st.success(f"✅ Peminjaman berhasil! ID: {id_peminjaman}")
+                        st.success(f"✅ Peminjaman berhasil! **ID: {id_peminjaman}**")
+                        st.balloons()
                         
                         # Show receipt
                         st.markdown("---")
-                        st.markdown(f"""
-                        ### 🧾 RECEIPT PEMINJAMAN
+                        st.markdown("### 🧾 RECEIPT PEMINJAMAN BUKU")
                         
-                        **No. Peminjaman:** {id_peminjaman}  
-                        **Tanggal:** {tanggal_pinjam.strftime("%Y-%m-%d")}  
-                        **Admin:** {st.session_state.admin_username}
+                        receipt_col1, receipt_col2 = st.columns(2)
                         
-                        ---
-                        **DATA SISWA:**
-                        - Nama: {nama_siswa}
-                        - Kelas: {kelas}
+                        with receipt_col1:
+                            st.markdown(f"""
+                            **📋 INFORMASI PEMINJAMAN**
+                            - No. Peminjaman: `{id_peminjaman}`
+                            - Tanggal Pinjam: `{tanggal_pinjam.strftime("%d-%m-%Y")}`
+                            - Tanggal Kembali: `{tanggal_kembali.strftime("%d-%m-%Y")}`
+                            - Admin: `{st.session_state.admin_username}`
+                            """)
                         
-                        **DATA BUKU:**
-                        - Kode: {kode_buku}
-                        - Nama: {buku['nama']}
+                        with receipt_col2:
+                            st.markdown(f"""
+                            **👤 DATA SISWA**
+                            - Nama: `{nama_siswa}`
+                            - Kelas: `{kelas}`
+                            
+                            **📚 DATA BUKU**
+                            - Kode: `{kode_buku}`
+                            - Nama: `{buku['nama']}`
+                            """)
                         
-                        ---
-                        ⚠️ **Harap kembalikan buku tepat waktu!**
-                        """)
+                        st.warning("⚠️ **Harap kembalikan buku tepat waktu!**")
                         
                     except Exception as e:
-                        st.error(f"Gagal menyimpan: {e}")
+                        st.error(f"❌ Gagal menyimpan: {e}")
 
 def lihat_peminjaman_page():
     """Halaman Lihat Peminjaman"""
@@ -507,7 +567,7 @@ def lihat_peminjaman_page():
     df = PeminjamanModel.get_all(st.session_state.filter_status)
     
     if df.empty:
-        st.info("Tidak ada data peminjaman")
+        st.info("📚 Tidak ada data peminjaman")
     else:
         st.dataframe(df, use_container_width=True, hide_index=True)
 
@@ -530,13 +590,16 @@ def pengembalian_page():
             df["id_peminjaman"].tolist()
         )
         
-        if st.button("✅ KEMBALIKAN BUKU", use_container_width=True):
-            try:
-                PeminjamanModel.return_book(id_peminjaman)
-                st.success(f"✅ Buku ID {id_peminjaman} berhasil dikembalikan!")
-                st.rerun()
-            except Exception as e:
-                st.error(f"Gagal mengembalikan buku: {e}")
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button("✅ KEMBALIKAN BUKU", use_container_width=True):
+                try:
+                    PeminjamanModel.return_book(id_peminjaman)
+                    st.success(f"✅ Buku ID {id_peminjaman} berhasil dikembalikan!")
+                    st.balloons()
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"❌ Gagal mengembalikan buku: {e}")
 
 def data_siswa_page():
     """Halaman Data Siswa"""
@@ -555,7 +618,7 @@ def data_siswa_page():
         search_keyword = st.text_input("🔍 Cari siswa", key="search_siswa")
     with col4:
         if st.button("Cari", use_container_width=True):
-            pass  # Trigger rerun
+            pass
     
     # Form tambah siswa
     if st.session_state.get("show_add_siswa", False):
@@ -618,7 +681,7 @@ def data_buku_page():
         search_keyword = st.text_input("🔍 Cari buku", key="search_buku")
     with col4:
         if st.button("Cari", use_container_width=True):
-            pass  # Trigger rerun
+            pass
     
     # Form tambah buku
     if st.session_state.get("show_add_buku", False):
@@ -682,6 +745,10 @@ def main():
     
     # Sidebar menu
     with st.sidebar:
+        # Logo sekolah di sidebar
+        if os.path.exists("sman47.jpeg"):
+            st.image("sman47.jpeg", use_container_width=True)
+        
         st.markdown("# 📚 MENU")
         st.markdown(f"**Admin:** {st.session_state.admin_username}")
         st.markdown("---")
@@ -695,11 +762,13 @@ def main():
                 "👥 Data Siswa",
                 "📚 Data Buku",
                 "🚪 Logout"
-            ]
+            ],
+            label_visibility="collapsed"
         )
         
         st.markdown("---")
         st.caption("© 2025 SMAN 47 Jakarta")
+        st.caption("PKM Universitas Pamulang")
     
     # Route to pages
     if menu == "📖 Input Peminjaman":
@@ -714,7 +783,7 @@ def main():
         data_buku_page()
     elif menu == "🚪 Logout":
         AuthService.logout()
-        st.success("Logout berhasil!")
+        st.success("✅ Logout berhasil!")
         st.rerun()
 
 if __name__ == "__main__":
