@@ -441,20 +441,20 @@ def login_page():
         # Header login (sejajar dengan form)
         st.markdown("""
         <div class="main-header" style="padding: 15px; margin-bottom: 30px;">
-            <h2 style="margin: 0;">🏫 SMAN 47 JAKARTA</h2>
+            <h2 style="margin: 0;">SMAN 47 JAKARTA</h2>
             <p style="margin: 5px 0 0 0; font-size: 16px;">Sistem Perpustakaan</p>
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("### 🔐 LOGIN ADMIN")
+        st.markdown("### LOGIN ADMIN")
         
         with st.form("login_form"):
-            username = st.text_input("👤 Username", placeholder="Masukkan username")
-            password = st.text_input("🔒 Password", type="password", placeholder="Masukkan password")
+            username = st.text_input("Username", placeholder="Masukkan username")
+            password = st.text_input("Password", type="password", placeholder="Masukkan password")
             
             col_a, col_b, col_c = st.columns([1, 2, 1])
             with col_b:
-                submit = st.form_submit_button("🚀 LOGIN", use_container_width=True)
+                submit = st.form_submit_button("LOGIN", use_container_width=True)
             
             if submit:
                 if not username or not password:
@@ -584,7 +584,7 @@ def input_peminjaman_page():
                         
                         with receipt_col1:
                             st.markdown(f"""
-                            **📋 INFORMASI PEMINJAMAN**
+                            **INFORMASI PEMINJAMAN**
                             - No. Peminjaman: `{id_peminjaman}`
                             - Tanggal Pinjam: `{tanggal_pinjam.strftime("%d-%m-%Y")}`
                             - Tanggal Kembali: `{tanggal_kembali.strftime("%d-%m-%Y")}`
@@ -593,11 +593,11 @@ def input_peminjaman_page():
                         
                         with receipt_col2:
                             st.markdown(f"""
-                            **👤 DATA SISWA**
+                            **DATA SISWA**
                             - Nama: `{nama_siswa}`
                             - Kelas: `{kelas}`
                             
-                            **📚 DATA BUKU**
+                            **DATA BUKU**
                             - Kode: `{kode_buku}`
                             - Nama: `{buku['nama']}`
                             """)
@@ -610,7 +610,7 @@ def input_peminjaman_page():
 def lihat_peminjaman_page():
     """Halaman Lihat Peminjaman"""
     show_header()
-    st.markdown("## 📋 DATA PEMINJAMAN")
+    st.markdown("## DATA PEMINJAMAN")
     
     # Filter buttons
     col1, col2, col3 = st.columns(3)
@@ -669,7 +669,7 @@ def pengembalian_page():
 def data_siswa_page():
     """Halaman Data Siswa"""
     show_header()
-    st.markdown("## 👥 DATA SISWA")
+    st.markdown("## DATA SISWA")
     
     # Action buttons
     col1, col2, col3, col4 = st.columns(4)
@@ -732,7 +732,7 @@ def data_siswa_page():
 def data_buku_page():
     """Halaman Data Buku"""
     show_header()
-    st.markdown("## 📚 DATA BUKU")
+    st.markdown("## DATA BUKU")
     
     # Action buttons
     col1, col2, col3, col4 = st.columns(4)
@@ -818,12 +818,12 @@ def main():
         menu = st.radio(
             "Navigasi",
             [
-                "📖 Input Peminjaman",
-                "📋 Lihat Peminjaman",
-                "✅ Pengembalian Buku",
-                "👥 Data Siswa",
-                "📚 Data Buku",
-                "🚪 Logout"
+                "Input Peminjaman",
+                "Lihat Peminjaman",
+                "Pengembalian Buku",
+                "Data Siswa",
+                "Data Buku",
+                "Logout"
             ],
             label_visibility="collapsed"
         )
@@ -833,21 +833,22 @@ def main():
         st.caption("PKM Universitas Pamulang")
     
     # Route to pages
-    if menu == "📖 Input Peminjaman":
+    if menu == "Input Peminjaman":
         input_peminjaman_page()
-    elif menu == "📋 Lihat Peminjaman":
+    elif menu == "Lihat Peminjaman":
         lihat_peminjaman_page()
-    elif menu == "✅ Pengembalian Buku":
+    elif menu == "Pengembalian Buku":
         pengembalian_page()
-    elif menu == "👥 Data Siswa":
+    elif menu == "Data Siswa":
         data_siswa_page()
-    elif menu == "📚 Data Buku":
+    elif menu == "Data Buku":
         data_buku_page()
-    elif menu == "🚪 Logout":
+    elif menu == "Logout":
         AuthService.logout()
         st.success("✅ Logout berhasil!")
         st.rerun()
 
 if __name__ == "__main__":
     main()
+
 
