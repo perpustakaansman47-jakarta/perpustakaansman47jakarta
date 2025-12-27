@@ -414,18 +414,13 @@ class AuthService:
 # =====================================================
 
 def show_header():
-    """Header dengan gambar gedung SMAN 47"""
+    """Header dengan background gambar SMAN 47"""
     
     # Set background image untuk halaman setelah login
     if os.path.exists("sman47.jpeg"):
         set_background_image("sman47.jpeg", opacity=0.85)
     
-    # Banner gedung sekolah di atas header
-    col1, col2, col3 = st.columns([1, 3, 1])
-    with col2:
-        if os.path.exists("sman47.jpeg"):
-            st.image("sman47.jpeg", use_container_width=True)
-    
+    # Header tanpa banner gambar (karena udah jadi background)
     st.markdown(f"""
     <div class="main-header" style="padding: 15px;">
         <h2 style="margin: 0;">🏫 SISTEM PERPUSTAKAAN SMAN 47 JAKARTA</h2>
@@ -440,16 +435,17 @@ def login_page():
     if os.path.exists("logo1.jpeg"):
         set_background_image("logo1.jpeg", opacity=0.15)
     
-    st.markdown("""
-    <div class="main-header" style="padding: 15px; margin-bottom: 30px;">
-        <h2 style="margin: 0;">🏫 SMAN 47 JAKARTA</h2>
-        <p style="margin: 5px 0 0 0; font-size: 16px;">Sistem Perpustakaan</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
     col1, col2, col3 = st.columns([1, 2, 1])
     
     with col2:
+        # Header login (sejajar dengan form)
+        st.markdown("""
+        <div class="main-header" style="padding: 15px; margin-bottom: 30px;">
+            <h2 style="margin: 0;">🏫 SMAN 47 JAKARTA</h2>
+            <p style="margin: 5px 0 0 0; font-size: 16px;">Sistem Perpustakaan</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
         st.markdown("### 🔐 LOGIN ADMIN")
         
         with st.form("login_form"):
@@ -771,12 +767,9 @@ def main():
     
     # Sidebar menu
     with st.sidebar:
-        # Logo sekolah di sidebar
-        if os.path.exists("sman47.jpeg"):
-            st.image("sman47.jpeg", use_container_width=True)
-        
+        # Hapus gambar di sidebar, cukup teks aja
         st.markdown("# 📚 MENU")
-        st.markdown(f"**Admin:** {st.session_state.admin_username}")
+        st.markdown(f"**👤 Admin:** {st.session_state.admin_username}")
         st.markdown("---")
         
         menu = st.radio(
