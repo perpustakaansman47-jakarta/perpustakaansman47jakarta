@@ -423,7 +423,7 @@ def show_header():
     # Header tanpa banner gambar (karena udah jadi background)
     st.markdown(f"""
     <div class="main-header" style="padding: 15px;">
-        <h2 style="margin: 0;">🏫 SISTEM PERPUSTAKAAN SMAN 47 JAKARTA</h2>
+        <h2 style="margin: 0;">SISTEM PERPUSTAKAAN SMAN 47 JAKARTA</h2>
         <p style="margin: 5px 0 0 0; font-size: 14px;">Admin: {st.session_state.get('admin_username', 'Unknown')}</p>
     </div>
     """, unsafe_allow_html=True)
@@ -507,12 +507,12 @@ def input_peminjaman_page():
         col1, col2 = st.columns(2)
         
         with col1:
-            nama_siswa = st.text_input("👤 Nama Siswa", placeholder="Masukkan nama siswa")
-            kelas = st.text_input("📚 Kelas", placeholder="Contoh: 11 IPA 1")
+            nama_siswa = st.text_input("Nama Siswa", placeholder="Masukkan nama siswa")
+            kelas = st.text_input("Kelas", placeholder="Contoh: 11 IPA 1")
             
         with col2:
-            kode_buku = st.text_input("🔍 Kode Buku", placeholder="Masukkan kode buku")
-            tanggal_pinjam = st.date_input("📅 Tanggal Pinjam", datetime.now())
+            kode_buku = st.text_input("Kode Buku", placeholder="Masukkan kode buku")
+            tanggal_pinjam = st.date_input("Tanggal Pinjam", datetime.now())
         
         # Info buku
         if kode_buku:
@@ -850,5 +850,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
