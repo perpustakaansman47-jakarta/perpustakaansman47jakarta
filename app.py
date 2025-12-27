@@ -41,6 +41,7 @@ st.markdown("""
         font-weight: bold;
         border: none;
         transition: all 0.3s;
+        background-color: rgba(255, 255, 255, 0.95) !important;
     }
     
     .stButton>button:hover {
@@ -61,11 +62,32 @@ st.markdown("""
     .stSuccess, .stError, .stWarning, .stInfo {
         border-radius: 8px;
         padding: 15px;
+        background-color: rgba(255, 255, 255, 0.95) !important;
     }
     
     /* DataFrame */
     .dataframe {
         border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.95) !important;
+    }
+    
+    /* Form Container - Background Putih Semi Transparan */
+    div[data-testid="stForm"] {
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        padding: 20px;
+        border-radius: 10px;
+    }
+    
+    /* Text Input Background */
+    input[type="text"], input[type="password"], input[type="date"], 
+    textarea, select {
+        background-color: rgba(255, 255, 255, 0.98) !important;
+    }
+    
+    /* Expander Background */
+    div[data-testid="stExpander"] {
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 10px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -394,6 +416,10 @@ class AuthService:
 def show_header():
     """Header dengan gambar gedung SMAN 47"""
     
+    # Set background image untuk halaman setelah login
+    if os.path.exists("sman47.jpeg"):
+        set_background_image("sman47.jpeg", opacity=0.85)
+    
     # Banner gedung sekolah di atas header
     col1, col2, col3 = st.columns([1, 3, 1])
     with col2:
@@ -401,9 +427,9 @@ def show_header():
             st.image("sman47.jpeg", use_container_width=True)
     
     st.markdown(f"""
-    <div class="main-header">
-        <h1>🏫 SISTEM PERPUSTAKAAN SMAN 47 JAKARTA</h1>
-        <p>Admin: {st.session_state.get('admin_username', 'Unknown')}</p>
+    <div class="main-header" style="padding: 15px;">
+        <h2 style="margin: 0;">🏫 SISTEM PERPUSTAKAAN SMAN 47 JAKARTA</h2>
+        <p style="margin: 5px 0 0 0; font-size: 14px;">Admin: {st.session_state.get('admin_username', 'Unknown')}</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -415,9 +441,9 @@ def login_page():
         set_background_image("logo1.jpeg", opacity=0.15)
     
     st.markdown("""
-    <div class="main-header">
-        <h1>🏫 SMAN 47 JAKARTA</h1>
-        <h3>Sistem Perpustakaan</h3>
+    <div class="main-header" style="padding: 15px; margin-bottom: 30px;">
+        <h2 style="margin: 0;">🏫 SMAN 47 JAKARTA</h2>
+        <p style="margin: 5px 0 0 0; font-size: 16px;">Sistem Perpustakaan</p>
     </div>
     """, unsafe_allow_html=True)
     
