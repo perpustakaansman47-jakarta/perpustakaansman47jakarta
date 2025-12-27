@@ -531,7 +531,7 @@ def input_peminjaman_page():
                     padding: 15px; border-radius: 10px; border-left: 4px solid #2196f3;
                     margin: 10px 0;">
             <p style="margin: 0; font-size: 16px; color: #1565c0;">
-                📅 <strong>Tanggal Pengembalian (Otomatis):</strong> 
+                📅 <strong>Tanggal Pengembalian :</strong> 
                 <span style="font-size: 18px; font-weight: bold; color: #0d47a1;">
                     {tanggal_kembali.strftime('%d-%m-%Y')}
                 </span>
@@ -850,3 +850,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
