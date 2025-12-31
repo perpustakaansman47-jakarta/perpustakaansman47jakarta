@@ -670,17 +670,19 @@ def data_siswa_page():
     show_header()
     st.markdown("## DATA SISWA")
     
-    # Action buttons
-    col1, col2, col3, col4 = st.columns(4)
+    # Action buttons - PERBAIKAN
+    col1, col2, col3 = st.columns(3)
+    
     with col1:
         if st.button("➕ Tambah Siswa", use_container_width=True):
             st.session_state.show_add_siswa = True
+    
     with col2:
         if st.button("🔄 Refresh", use_container_width=True):
             st.rerun()
+    
     with col3:
-        if st.button("🔍 Cari Siswa", use_container_width=True):
-        pass
+        search_keyword = st.text_input("🔍 Cari siswa", key="search_siswa")
     
     # Form tambah siswa
     if st.session_state.get("show_add_siswa", False):
@@ -731,17 +733,19 @@ def data_buku_page():
     show_header()
     st.markdown("## DATA BUKU")
     
-    # Action buttons
-    col1, col2, col3, col4 = st.columns(4)
+    # Action buttons - PERBAIKAN
+    col1, col2, col3 = st.columns(3)
+    
     with col1:
         if st.button("➕ Tambah Buku", use_container_width=True):
             st.session_state.show_add_buku = True
+    
     with col2:
         if st.button("🔄 Refresh", use_container_width=True):
             st.rerun()
+    
     with col3:
-        if st.button("🔍 Cari Buku", use_container_width=True):
-            pass
+        search_keyword = st.text_input("🔍 Cari buku", key="search_buku")
     
     # Form tambah buku
     if st.session_state.get("show_add_buku", False):
@@ -782,7 +786,6 @@ def data_buku_page():
         st.info("Tidak ada data buku")
     else:
         st.dataframe(df, use_container_width=True, hide_index=True)
-
 # =====================================================
 # MAIN APPLICATION
 # =====================================================
@@ -845,6 +848,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
