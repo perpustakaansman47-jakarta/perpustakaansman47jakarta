@@ -679,10 +679,8 @@ def data_siswa_page():
         if st.button("🔄 Refresh", use_container_width=True):
             st.rerun()
     with col3:
-        search_keyword = st.text_input("🔍 Cari siswa", key="search_siswa")
-    with col4:
-        if st.button("Cari", use_container_width=True):
-            pass
+        if st.button("🔍 Cari Siswa", use_container_width=True):
+        pass
     
     # Form tambah siswa
     if st.session_state.get("show_add_siswa", False):
@@ -742,9 +740,7 @@ def data_buku_page():
         if st.button("🔄 Refresh", use_container_width=True):
             st.rerun()
     with col3:
-        search_keyword = st.text_input("🔍 Cari buku", key="search_buku")
-    with col4:
-        if st.button("Cari", use_container_width=True):
+        if st.button("🔍 Cari Buku", use_container_width=True):
             pass
     
     # Form tambah buku
@@ -849,6 +845,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
