@@ -418,8 +418,7 @@ def show_header():
     
     # Set background image untuk halaman setelah login
     if os.path.exists("sman47.jpeg"):
-        set_background_image("sman47.jpeg", opacity=0.85)
-    
+        set_background_image("sman47.jpeg", opacity=0.5)  # ← LEBIH TRANSPARAN
     # Header tanpa banner gambar (karena udah jadi background)
     st.markdown(f"""
     <div class="main-header" style="padding: 15px;">
@@ -850,6 +849,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
