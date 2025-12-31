@@ -11,7 +11,7 @@ import base64
 # =====================================================
 st.set_page_config(
     page_title="Sistem Perpustakaan SMAN 47 Jakarta",
-    page_icon="📚",
+    page_icon="🏫",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -103,7 +103,7 @@ def get_base64_image(image_path):
     except:
         return None
 
-def set_background_image(image_path, opacity=0.15):
+def set_background_image(image_path, opacity=0.13):
     """Set background image halaman login"""
     base64_img = get_base64_image(image_path)
     if base64_img:
@@ -418,7 +418,7 @@ def show_header():
     
     # Set background image untuk halaman setelah login
     if os.path.exists("sman47.jpeg"):
-        set_background_image("sman47.jpeg", opacity=0.5)  # ← LEBIH TRANSPARAN
+        set_background_image("sman47.jpeg", opacity=0.3)  # ← LEBIH TRANSPARAN
     # Header tanpa banner gambar (karena udah jadi background)
     st.markdown(f"""
     <div class="main-header" style="padding: 15px;">
@@ -432,7 +432,7 @@ def login_page():
     
     # Background gambar library digital
     if os.path.exists("logo1.jpeg"):
-        set_background_image("logo1.jpeg", opacity=0.15)
+        set_background_image("logo1.jpeg", opacity=0.13)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     
@@ -466,12 +466,12 @@ def login_page():
                     st.error("❌ Username atau password salah!")
         
         st.markdown("---")
-        st.caption("© 2025 SMAN 47 Jakarta - PKM Universitas Pamulang")
+        st.caption("© 2025 SMAN 47 Jakarta - Created By PKM Universitas Pamulang")
 
 def input_peminjaman_page():
     """Halaman Input Peminjaman"""
     show_header()
-    st.markdown("## 📖 INPUT PEMINJAMAN BUKU")
+    st.markdown("## 📖 INPUT PEMINJAMAN")
     
     # JavaScript untuk auto-update tanggal pengembalian
     st.markdown("""
@@ -543,7 +543,7 @@ def input_peminjaman_page():
         
         col_a, col_b, col_c = st.columns([1, 2, 1])
         with col_b:
-            submit = st.form_submit_button("✅ SIMPAN PEMINJAMAN", use_container_width=True)
+            submit = st.form_submit_button("SIMPAN PEMINJAMAN", use_container_width=True)
         
         if submit:
             if not nama_siswa or not kelas or kelas == "Contoh: 11 IPA 1":
@@ -572,12 +572,12 @@ def input_peminjaman_page():
                             st.session_state.admin_id
                         )
                         
-                        st.success(f"✅ Peminjaman berhasil! **ID: {id_peminjaman}**")
+                        st.success(f"Peminjaman berhasil! **ID: {id_peminjaman}**")
                         st.balloons()
                         
                         # Show receipt
                         st.markdown("---")
-                        st.markdown("### 🧾 RECEIPT PEMINJAMAN BUKU")
+                        st.markdown("### RECEIPT PEMINJAMAN BUKU")
                         
                         receipt_col1, receipt_col2 = st.columns(2)
                         
@@ -609,18 +609,18 @@ def input_peminjaman_page():
 def lihat_peminjaman_page():
     """Halaman Lihat Peminjaman"""
     show_header()
-    st.markdown("## DATA PEMINJAMAN")
+    st.markdown("## 📋 DATA PEMINJAMAN")
     
     # Filter buttons
     col1, col2, col3 = st.columns(3)
     with col1:
-        if st.button("📊 Semua", use_container_width=True):
+        if st.button("Semua", use_container_width=True):
             st.session_state.filter_status = "ALL"
     with col2:
-        if st.button("🔄 Sedang Dipinjam", use_container_width=True):
+        if st.button("Sedang Dipinjam", use_container_width=True):
             st.session_state.filter_status = "dipinjam"
     with col3:
-        if st.button("✅ Sudah Dikembalikan", use_container_width=True):
+        if st.button("Sudah Dikembalikan", use_container_width=True):
             st.session_state.filter_status = "dikembalikan"
     
     # Default filter
@@ -631,7 +631,7 @@ def lihat_peminjaman_page():
     df = PeminjamanModel.get_all(st.session_state.filter_status)
     
     if df.empty:
-        st.info("📚 Tidak ada data peminjaman")
+        st.info("Tidak ada data peminjaman")
     else:
         st.dataframe(df, use_container_width=True, hide_index=True)
 
@@ -656,7 +656,7 @@ def pengembalian_page():
         
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            if st.button("✅ KEMBALIKAN BUKU", use_container_width=True):
+            if st.button("KEMBALIKAN BUKU", use_container_width=True):
                 try:
                     PeminjamanModel.return_book(id_peminjaman)
                     st.success(f"✅ Buku ID {id_peminjaman} berhasil dikembalikan!")
@@ -668,7 +668,7 @@ def pengembalian_page():
 def data_siswa_page():
     """Halaman Data Siswa"""
     show_header()
-    st.markdown("## DATA SISWA")
+    st.markdown("## 👥 DATA SISWA")
     
     # Action buttons - PERBAIKAN
     col1, col2, col3 = st.columns(3)
@@ -678,7 +678,7 @@ def data_siswa_page():
             st.session_state.show_add_siswa = True
     
     with col2:
-        if st.button("🔄 Refresh", use_container_width=True):
+        if st.button("Refresh", use_container_width=True):
             st.rerun()
     
     with col3:
@@ -686,7 +686,7 @@ def data_siswa_page():
     
     # Form tambah siswa
     if st.session_state.get("show_add_siswa", False):
-        with st.expander("➕ FORM TAMBAH SISWA BARU", expanded=True):
+        with st.expander("FORM TAMBAH SISWA BARU", expanded=True):
             with st.form("form_tambah_siswa"):
                 nama_siswa = st.text_input("Nama Siswa")
                 
@@ -696,9 +696,9 @@ def data_siswa_page():
                 
                 col_a, col_b = st.columns(2)
                 with col_a:
-                    submit = st.form_submit_button("✅ SIMPAN", use_container_width=True)
+                    submit = st.form_submit_button("SIMPAN", use_container_width=True)
                 with col_b:
-                    cancel = st.form_submit_button("❌ BATAL", use_container_width=True)
+                    cancel = st.form_submit_button("BATAL", use_container_width=True)
                 
                 if submit:
                     if not nama_siswa or not kelas_selected:
@@ -731,7 +731,7 @@ def data_siswa_page():
 def data_buku_page():
     """Halaman Data Buku"""
     show_header()
-    st.markdown("## DATA BUKU")
+    st.markdown("## 📚 DATA BUKU")
     
     # Action buttons - PERBAIKAN
     col1, col2, col3 = st.columns(3)
@@ -741,7 +741,7 @@ def data_buku_page():
             st.session_state.show_add_buku = True
     
     with col2:
-        if st.button("🔄 Refresh", use_container_width=True):
+        if st.button("Refresh", use_container_width=True):
             st.rerun()
     
     with col3:
@@ -749,16 +749,16 @@ def data_buku_page():
     
     # Form tambah buku
     if st.session_state.get("show_add_buku", False):
-        with st.expander("➕ FORM TAMBAH BUKU BARU", expanded=True):
+        with st.expander("FORM TAMBAH BUKU BARU", expanded=True):
             with st.form("form_tambah_buku"):
                 kode_buku = st.text_input("Kode Buku")
                 nama_buku = st.text_input("Nama Buku")
                 
                 col_a, col_b = st.columns(2)
                 with col_a:
-                    submit = st.form_submit_button("✅ SIMPAN", use_container_width=True)
+                    submit = st.form_submit_button("SIMPAN", use_container_width=True)
                 with col_b:
-                    cancel = st.form_submit_button("❌ BATAL", use_container_width=True)
+                    cancel = st.form_submit_button("BATAL", use_container_width=True)
                 
                 if submit:
                     if not kode_buku or not nama_buku:
@@ -828,7 +828,7 @@ def main():
         
         st.markdown("---")
         st.caption("© 2025 SMAN 47 Jakarta")
-        st.caption("PKM Universitas Pamulang")
+        st.caption("Created By PKM Universitas Pamulang")
     
     # Route to pages
     if menu == "Input Peminjaman":
@@ -848,6 +848,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
