@@ -440,16 +440,16 @@ def login_page():
         # Header login (sejajar dengan form)
         st.markdown("""
         <div class="main-header" style="padding: 15px; margin-bottom: 30px;">
-            <h2 style="margin: 0;">SMAN 47 JAKARTA</h2>
+            <h2 style="margin: 0;">🏫 SMAN 47 JAKARTA 🏫</h2>
             <p style="margin: 5px 0 0 0; font-size: 16px;">Sistem Perpustakaan</p>
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("### LOGIN ADMIN")
+        st.markdown("### LOGIN ADMIN ###")
         
         with st.form("login_form"):
-            username = st.text_input("Username", placeholder="Masukkan username")
-            password = st.text_input("Password", type="password", placeholder="Masukkan password")
+            username = st.text_input("👤 Username :", placeholder="Masukkan username")
+            password = st.text_input("🔑 Password :", type="password", placeholder="Masukkan password")
             
             col_a, col_b, col_c = st.columns([1, 2, 1])
             with col_b:
@@ -506,12 +506,12 @@ def input_peminjaman_page():
         col1, col2 = st.columns(2)
         
         with col1:
-            nama_siswa = st.text_input("Nama Siswa", placeholder="Masukkan nama siswa")
-            kelas = st.text_input("Kelas", placeholder="Contoh: 11 IPA 1")
+            nama_siswa = st.text_input("👤 Nama Siswa :", placeholder="Masukkan nama siswa")
+            kelas = st.text_input("📚 Kelas:", placeholder="Contoh: 11 IPA 1")
             
         with col2:
-            kode_buku = st.text_input("Kode Buku", placeholder="Masukkan kode buku")
-            tanggal_pinjam = st.date_input("Tanggal Pinjam", datetime.now())
+            kode_buku = st.text_input("📖 Kode Buku:", placeholder="Masukkan kode buku")
+            tanggal_pinjam = st.date_input("📅 Tanggal Pinjam:", datetime.now())
         
         # Info buku
         if kode_buku:
@@ -848,6 +848,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
